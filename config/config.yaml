@@ -1,0 +1,100 @@
+# config/config.yaml
+simulation:
+  shift_duration_minutes: 480.0
+  monte_carlo_replications: 10
+  warmup_fraction: 0.15          
+  target_utilization: 0.95       
+  breaks:
+    - start_time: 240.0   # 4. Saatte Yemek Molası (Dakika 240)
+      duration: 30.0
+    - start_time: 360.0   # 6. Saatte Çay Molası (Dakika 360)
+      duration: 15.0
+
+production_routing:
+  - "Hazirlik"
+  - "Kaynak"
+  - "Termal"
+  - "NDT"
+
+resources:
+  operator_count: 5
+  capacities:
+    Hazirlik: 1
+    Kaynak: 1
+    Termal: 1
+    NDT: 1
+    Rework: 1
+
+stations:
+  Hazirlik:
+    is_quality_gate: false
+    setup_mu: 2.0
+    setup_sigma: 0.5
+    auto_mu: 5.0
+    auto_sigma: 1.0
+    buffer_capacity: 10
+  Kaynak:
+    is_quality_gate: false
+    setup_mu: 3.0
+    setup_sigma: 0.8
+    auto_mu: 15.0
+    auto_sigma: 2.5
+    buffer_capacity: 8
+  Termal:
+    is_quality_gate: false
+    setup_mu: 5.0
+    setup_sigma: 1.2
+    auto_mu: 20.0
+    auto_sigma: 4.0
+    buffer_capacity: 5
+  NDT:
+    is_quality_gate: true
+    setup_mu: 1.0
+    setup_sigma: 0.1
+    auto_mu: 6.0
+    auto_sigma: 1.2
+    buffer_capacity: 12
+  Rework:
+    is_quality_gate: true
+    setup_mu: 2.0
+    setup_sigma: 0.5
+    auto_mu: 25.0
+    auto_sigma: 5.0
+    buffer_capacity: 10
+
+maintenance:
+  Hazirlik:
+    mtbf: 500.0
+    mttr_mu: 15.0
+    mttr_sigma: 3.0
+  Kaynak:
+    mtbf: 300.0
+    mttr_mu: 35.0
+    mttr_sigma: 5.0
+  Termal:
+    mtbf: 400.0
+    mttr_mu: 50.0
+    mttr_sigma: 8.0
+  NDT:
+    mtbf: 600.0
+    mttr_mu: 10.0
+    mttr_sigma: 2.0
+  # AKADEMİK DÜZELTME: Rework makinesi de gerçek dünyadaki gibi arızalanabilir.
+  Rework:
+    mtbf: 450.0
+    mttr_mu: 40.0
+    mttr_sigma: 5.0
+
+quality:
+  ndt_fty_min: 0.75    
+  ndt_fty_max: 0.88    
+  rework_recovery_min: 0.70
+  rework_recovery_max: 0.90
+  # MİMARİ DÜZELTME: Python içine hardcoded yazılan "Direkt Hurda" değeri ait olduğu yere (Config) taşındı.
+  direct_scrap_rate: 0.15
+
+financials:
+  scrap_cost_per_unit: 8500.0
+  rework_cost_per_unit: 1200.0
+  downtime_cost_per_minute: 150.0
+  idle_cost_per_minute: 45.0
